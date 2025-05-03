@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # Backend service
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./Backend/.env
+    depends_on:
+      - mongo-db
+    restart: always
+    networks:
+      - app-network
+
+  # MongoDB service
+  mongo-db:
+    image: mongo
+    container_name: mongo-service
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    # restart: always  
+    networks:
+      - app-network
+
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+
+# docker run -d --name mongo-db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example -v mongo-data:/data/db mongo

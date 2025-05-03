@@ -1,0 +1,23 @@
+# Node modules & production builds
+node_modules
+dist
+build
+
+# Logs
+*.log
+
+# Git
+.git
+.gitignore
+
+# Docker-related
+Dockerfile
+.dockerignore
+
+# Environment/config files
+.env
+.env.local
+
+# OS-specific
+.DS_Store
+Thumbs.db

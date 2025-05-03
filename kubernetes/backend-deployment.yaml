@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: janhavianap/chat-app:backend-v2
+          ports:
+            - containerPort: 5002
+          # env:
+            # - name: PORT
+            #   value: "5002"
+            # - name: MONGO_URL
+            #   value: mongodb://root:example@mongo-service:27017/
+            # - name: MONGODB_URL
+            #   value: mongodb://root:example@mongo-service:27017/chat-app?authSource=admin
+            # - name: JWT_TOKEN
+            #   value: supersecret123
+            # - name: SOCKET_ORIGIN
+            #   value: http://frontend:3001
+          envFrom:
+            - configMapRef:
+                name: backend-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 5002
+      targetPort: 5002
