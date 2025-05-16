@@ -4,7 +4,10 @@ import useGetAllUsers from "../../context/useGetAllUsers";
 
 function Users() {
   const [allUsers, loading] = useGetAllUsers();
-  console.log(allUsers);
+  if(loading){return <div className="text-white px-4">Loading users...</div>;}
+  if (!Array.isArray(allUsers)) {return <div className="text-red-500 px-4">Failed to load users</div>;}
+  console.log("allUsers:", allUsers, "Type:", typeof allUsers);
+  //console.log(allUsers);
   return (
     <div>
       <h1 className="px-8 py-2 text-white font-semibold bg-slate-800 rounded-md">

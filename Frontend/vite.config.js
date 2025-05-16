@@ -16,6 +16,7 @@ export default defineConfig({
         // target:"http://localhost:5002",
         target:"http://backend:5002",
         // target:"http://backend-service:5002",
+        //target: import.meta.env.VITE_SOCKET_URL
         changeOrigin: true,
         secure: false,
 

@@ -14,7 +14,8 @@ export const SocketProvider = ({ children }) => {
   const [authUser] = useAuth();
 
   useEffect(() => {
-    const SOCKET_URL = "http://backend-service:5002" || "http://backend:5002" || "http://localhost:5002";
+    const URL = "http://3.111.213.157:5002";
+    const SOCKET_URL = URL || "http://backend-service:5002" || "http://backend:5002" || "http://localhost:5002";
     if (authUser) {
       const socket = io(SOCKET_URL, {
         query: {

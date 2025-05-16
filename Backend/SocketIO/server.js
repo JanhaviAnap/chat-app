@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.SOCKET_ORIGIN||"http://localhost:3001",
+    origin: process.env.IP_URL||process.env.SOCKET_ORIGIN||"http://localhost:3001",
     methods: ["GET", "POST"],
     allowedHeaders: ['Content-Type'], 
     credentials: true,
