@@ -17,9 +17,13 @@ function Users() {
         className="py-2 flex-1 overflow-y-auto"
         style={{ maxHeight: "calc(84vh - 10vh)" }}
       >
-        {allUsers.map((user, index) => (
-          <User key={index} user={user} />
-        ))}
+        {allUsers.length === 0 ? (
+          <div className="text-gray-400 px-4">No users found.</div>
+        ) : (
+          allUsers.map((user, index) => (
+            <User key={user._id || index} user={user} />
+         ))
+       )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ function useGetAllUsers() {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const token = Cookies.get("jwt");
+        const token = localStorage.getItem("token"); //Cookies.get("jwt");
 	const URL = "http://3.111.213.157:5002";
 	console.log("API URL:",URL);
 	if (!token) {

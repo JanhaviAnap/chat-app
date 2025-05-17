@@ -2,38 +2,67 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Login() {
   const [authUser, setAuthUser] = useAuth();
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userInfo = {
       email: data.email,
       password: data.password,
     };
 
-    axios
-      .post("/api/user/login", userInfo)
-      .then((response) => {
-        if (response.data) {
-          toast.success("Login successful");
-        }
-        localStorage.setItem("ChatApp", JSON.stringify(response.data));
-        setAuthUser(response.data);
-      })
-      .catch((error) => {
-        if (error.response) {
-          toast.error("Error: " + error.response.data.error);
-        }
-      });
+//    axios
+//      .post("/api/user/login", userInfo)
+//      .then((response) => {
+//        if (response.data) {
+//          toast.success("Login successful");
+//        }
+//        localStorage.setItem("ChatApp", JSON.stringify(response.data));
+//        setAuthUser(response.data);
+//      })
+//      .catch((error) => {
+//        if (error.response) {
+//          toast.error("Error: " + error.response.data.error);
+//        }
+//      });
+
+    try {
+      const response = await axios.post("/api/user/login", userInfo);
+
+      if (response.data) {
+        const { token, user } = response.data;
+
+        // Store token and user in localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("ChatApp", JSON.stringify(user));
+
+        // Update auth context
+        setAuthUser({ token, user });
+
+        toast.success("Login successful");
+
+        // Redirect to home or chat page
+        navigate("/");
+      }
+    } catch (error) {
+      if (error.response?.data?.message) {
+        toast.error("Error: " + error.response.data.message);
+      } else {
+        toast.error("Login failed");
+      }
+    }
+
+
+
   };
   return (
     <>
